@@ -28,6 +28,7 @@ pip install torch==1.13.0+cu116 torchvision==0.14.0+cu116 --extra-index-url http
 ```
 
 
+
 Windowsの場合、bitsandbytesの入れ替えが必要です。
 2023.11.13現在、Latest Installすると 0.41.2 post2がInstallされますがcuda11.8と相性が悪いようです。
 

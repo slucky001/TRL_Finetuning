@@ -1,0 +1,54 @@
+### Sample cyberagent calm2-7b-chat 
+file_config:
+  dataset_path: "./dataset"
+  model_path: "cyberagent/calm2-7b-chat"
+
+other_config:
+  #max_seq_length: 512 # "None"=1024 datasetが15000recordあるとbatch1でもVRAM24GBで足りなくなる。512だと足りる。
+  max_seq_length: 1024 # "None"=1024 datasetが15000recordあるとbatch1でもVRAM24GBで足りなくなる。512だと足りる。
+
+prompt_config:
+  system_prefix: "" ### Llama2なら[INST]<<SYS>>\nに相当(Trainingなら未使用)
+  user_prefix: "USER: " ### ユーザーprefix Llama2 zeroshotなら[INST]に相当
+  input_prefix: "" ### 
+  assistant_prefix: "\nASSISTANT: " ### AI prefix
+
+bnb_4bit_config: ### これがほぼModelConfig 7B batch4で24GBVRAMが必要なので実質load in 4bit固定
+  load_in_4bit: True
+  bnb_4bit_quant_type: "nf4" # 量子化種別 (fp4 or nf4) 
+  bnb_4bit_compute_dtype: "bfloat16"  # 量子化のdtype (float16 or bfloat16) ※変数固定で
+  bnb_4bit_use_double_quant: False  # 二重量子化の有効化
+
+tokenizer_config:
+  use_fast: False  # Fastトークナイザーの有効化
+  add_eos_token: True  # データへのEOSの追加を指示
+  trust_remote_code: True
+
+peft_config:
+  r: 64
+  lora_alpha: 16
+  lora_dropout: 0.5
+  bias: "all"
+  task_type: "CAUSAL_LM"
+  ### target objectは全てのlinerLayerを検索してアプリ側で決める
+  #target_modules: ["q_proj", "o_proj", "gate_proj", "up_proj", "down_proj", "k_proj", "v_proj"]
+
+training_config:
+  output_dir: "./output"
+  fp16: False
+  bf16: True
+  max_steps: 300  # 学習ステップ数
+  per_device_train_batch_size: 1  # 学習用のGPUあたりのバッチサイズ/小さい方が汎化する可能性がある
+  gradient_accumulation_steps: 1  # 勾配を蓄積するための更新ステップの数
+  optim: "paged_adamw_32bit"  # オプティマイザ
+  learning_rate: 0.0002  # 初期学習率(YAMLなので、分かりにくいけど浮動小数点で書いてほしい)
+  lr_scheduler_type: "cosine"  # 学習率スケジュール
+  max_grad_norm: 0.3  # 最大法線勾配 (勾配クリッピング)
+  warmup_ratio: 0.03  # 線形ウォームアップのステップ比率 (0から学習率まで)
+  weight_decay: 0.001  # bias/LayerNormウェイトを除く全レイヤーに適用するウェイト減衰
+  save_steps: 25  # 何ステップ毎にチェックポイントを保存するか
+  logging_steps: 25  # 何ステップ毎にログを記録するか
+  group_by_length: True  # シーケンスを同じ長さのバッチにグループ化 (メモリ節約)
+  neftune_noise_alpha: 10
+  report_to: "tensorboard"  # レポート
+  

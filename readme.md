@@ -39,6 +39,11 @@ python -m pip install bitsandbytes==0.41.1 --prefer-binary --extra-index-url=htt
 ```
 trl_sft_training.py --config .\trainsettings\train_config.yaml
 ```
+以下のコマンドでサンプルデータの"cyberagent/calm2-7b-chat"での確認を行えます。
+```
+generate_lora.py
+```
+
 tensorboardのreportを出力するので、以下のコマンドで学習結果を確認できます。
 (出力フォルダをデフォルトから変更していない場合)
 ```

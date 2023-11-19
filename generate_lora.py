@@ -21,7 +21,7 @@ tokenizer = AutoTokenizer.from_pretrained(
 )
 
 # プロンプトの準備
-prompt = "USER: 富士山の高さは？\nASSISTANT:"
+prompt = "USER: お好み焼きの作り方を詳しく教えて。\nASSISTANT:"
 
 # 推論の実行
 input_ids = tokenizer(prompt, add_special_tokens=False, return_tensors='pt')

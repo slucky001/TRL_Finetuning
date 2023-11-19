@@ -6,7 +6,7 @@ output/*
 !output/.gitkeep
 dataset/*
 !dataset/.gitkeep
-trainsettings/
+trainsettings/*
 !trainsettings/train_config.yaml
 merged_model/*
 !merged_model/.gitkeep
@@ -14,6 +14,6 @@ evaluation/*
 !evaluation/.gitkeep
 vTrlFinetuning/
 garbage/
-__pycache__/*
+__pycache__/
 response/*
 !response/.gitkeep

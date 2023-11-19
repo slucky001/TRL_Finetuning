@@ -1,6 +1,7 @@
 # TRLを用いたSFT Finetuning Sampleコード
 ## 概要
-Npaka先生のコードを元にローカルでのFinetuning用にカスタマイズしたものです。
+Npaka先生のコードを元にローカルでのFinetuning用にカスタマイズしたものです。<br>
+LoRA作成～MergeModel作成、MergeModelの評価までをこのリポジトリで管理します。
 - 各種設定をファイル化して引数化
 - 汎用関数をcommon.pyに移動
 - neftune noise alphaを勝手に追加
@@ -58,8 +59,8 @@ tensorboard --logdir ./output
 
 ---
 ### Todo
-- [ ]  generate汎用化
-- [ ]  merge対応
-- [ ]  evaluation with gpt3.5turbo対応
-- [ ]  gguf化 , ctranslate2対応
-- [ ]  simple webui対応
+- [ ]  lora test用のgenerate汎用化
+- [ ]  lora merge対応
+- [ ]  merge後の出力評価用スクリプト対応
+- [ ]  merge modelのgguf化 , ctranslate2対応
+- [ ]  merge modelテスト用のsimple webui対応

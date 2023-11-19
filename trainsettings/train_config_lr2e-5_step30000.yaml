@@ -28,7 +28,7 @@ peft_config:
   r: 64
   lora_alpha: 16
   lora_dropout: 0.5
-  bias: "all"
+  bias: "none"
   task_type: "CAUSAL_LM"
   ### target objectは全てのlinerLayerを検索してアプリ側で決める
   #target_modules: ["q_proj", "o_proj", "gate_proj", "up_proj", "down_proj", "k_proj", "v_proj"]
@@ -37,11 +37,11 @@ training_config:
   output_dir: "./output"
   fp16: False
   bf16: True
-  max_steps: 40000  # 学習ステップ数
-  per_device_train_batch_size: 1  # 学習用のGPUあたりのバッチサイズ/小さい方が汎化する可能性がある
+  max_steps: 35000  # 学習ステップ数
+  per_device_train_batch_size: 2  # 学習用のGPUあたりのバッチサイズ/小さい方が汎化する可能性がある
   gradient_accumulation_steps: 1  # 勾配を蓄積するための更新ステップの数
   optim: "paged_adamw_32bit"  # オプティマイザ
-  learning_rate: 0.00002  # 初期学習率(YAMLなので、分かりにくいけど浮動小数点で書いてほしい)
+  learning_rate: 0.00005  # 初期学習率(YAMLなので、分かりにくいけど浮動小数点で書いてほしい)
   lr_scheduler_type: "cosine"  # 学習率スケジュール
   max_grad_norm: 0.3  # 最大法線勾配 (勾配クリッピング)
   warmup_ratio: 0.03  # 線形ウォームアップのステップ比率 (0から学習率まで)

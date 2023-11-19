@@ -37,6 +37,10 @@ python -m pip install bitsandbytes==0.41.1 --prefer-binary --extra-index-url=htt
 ```
 ### 使用方法
 以下のコマンドでtrainsettings内のyamlファイルに記述した設定に従ってLoRAアダプタを作成してくれます。
+デフォルトではcalm2-7b-chat Learning rate 2e-4,step300の設定を入れておきます。
+LoRAConig,TrainingArgumentsは引数をほぼそのままYAMLにしてあるので追加、修正そのまま可能ですが型に注意が必要です。
+※torch.float16など
+
 ```
 trl_sft_training.py --config .\trainsettings\train_config.yaml
 ```

@@ -21,17 +21,22 @@ tokenizer = AutoTokenizer.from_pretrained(
 )
 
 # プロンプトの準備
-prompt = "USER: お好み焼きの作り方を詳しく教えて。\nASSISTANT:"
+prompt = "以下は、タスクを説明する指示と、文脈のある入力の組み合わせです。要求を適切に満たす応答を書きなさい。\nUSER: お好み焼きの作り方を詳しく教えて。\nASSISTANT: "
+prompt = "あなたは誠実で優秀な日本人のアシスタントです。\nUSER: お好み焼きの作り方を詳しく教えて。\nASSISTANT:"
+prompt = "以下は、タスクを説明する指示と、文脈のある入力の組み合わせです。要求を適切に満たす応答を書きなさい。\nUSER: お好み焼きの作り方を詳しく教えて。\nASSISTANT:"
 
 # 推論の実行
 input_ids = tokenizer(prompt, add_special_tokens=False, return_tensors='pt')
 output_ids = model.generate(
     **input_ids.to(model.device),
-    max_new_tokens=100,
+    max_new_tokens=200,
     repetition_penalty = 1.3,
     do_sample=True,
-    temperature=0.3,
-    eos_token_id=tokenizer.eos_token_id,
+    #temperature=0.3, ### 評価のためにtemperatureは極力下げる
+    temperature=0.01,
+    pad_token_id=tokenizer.pad_token_id, ### youri パッドないのでeosにしろ、ってTransformersから怒られるのでこうした
+    bos_token_id=tokenizer.bos_token_id,
+    eos_token_id=tokenizer.eos_token_id
 )
 output = tokenizer.decode(output_ids.tolist()[0])
 print(output)

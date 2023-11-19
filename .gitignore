@@ -15,4 +15,5 @@ evaluation/*
 vTrlFinetuning/
 garbage/
 __pycache__/*
-response/
+response/*
+!response/.gitkeep

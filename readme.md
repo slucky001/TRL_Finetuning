@@ -29,16 +29,16 @@ pip install torch==1.13.0+cu116 torchvision==0.14.0+cu116 --extra-index-url http
 
 
 
-Windowsの場合、bitsandbytesの入れ替えが必要です。
-2023.11.13現在、Latest Installすると 0.41.2 post2がInstallされますがcuda11.8と相性が悪いようです。
+Windowsの場合、bitsandbytesの入れ替えが必要です。<br>
+2023.11.13現在、Latest Installすると 0.41.2 post2がInstallされますがcuda11.8と相性が悪いようです。<br>
 
 ```
 python -m pip install bitsandbytes==0.41.1 --prefer-binary --extra-index-url=https://jllllll.github.io/bitsandbytes-windows-webui
 ```
 ### 使用方法
-以下のコマンドでtrainsettings内のyamlファイルに記述した設定に従ってLoRAアダプタを作成してくれます。
-デフォルトではcalm2-7b-chat Learning rate 2e-4,step300の設定を入れておきます。
-LoRAConig,TrainingArgumentsは引数をほぼそのままYAMLにしてあるので追加、修正そのまま可能ですが型に注意が必要です。
+以下のコマンドでtrainsettings内のyamlファイルに記述した設定に従ってLoRAアダプタを作成してくれます。<br>
+デフォルトではcalm2-7b-chat Learning rate 2e-4,step300の設定を入れておきます。<br>
+LoRAConig,TrainingArgumentsは引数をほぼそのままYAMLにしてあるので追加、修正そのまま可能ですが型に注意が必要です。<br>
 ※torch.float16など
 
 ```
@@ -49,7 +49,7 @@ trl_sft_training.py --config .\trainsettings\train_config.yaml
 generate_lora.py
 ```
 
-tensorboardのreportを出力するので、以下のコマンドで学習結果を確認できます。
+tensorboardのreportを出力するので、以下のコマンドで学習結果を確認できます。<br>
 (出力フォルダをデフォルトから変更していない場合)
 ```
 tensorboard --logdir ./output

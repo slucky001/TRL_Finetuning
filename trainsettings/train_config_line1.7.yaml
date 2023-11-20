@@ -1,6 +1,8 @@
-### Sample cyberagent calm2-7b-chat 
+### Sample config 
 file_config:
+  title: "line1.7b-sft_lr2e-4_do0.5_nef5_step300" #タイトルは好きにつける
   dataset_path: "./dataset"
+  output_dir: "./output"
   model_path: "line-corporation/japanese-large-lm-1.7b-instruction-sft"
 
 other_config:
@@ -11,12 +13,12 @@ prompt_config:
   system_prefix: "" ### Llama2なら[INST]<<SYS>>\nに相当(Trainingなら未使用)
   user_prefix: "ユーザー: " ### ユーザーprefix Llama2 zeroshotなら[INST]に相当
   input_prefix: "" ### 
-  assistant_prefix: " システム: " ### AI prefix
+  assistant_prefix: "\nシステム:" ### AI prefix
 
 bnb_4bit_config: ### これがほぼModelConfig 7B batch4で24GBVRAMが必要なので実質load in 4bit固定
   load_in_4bit: True
   bnb_4bit_quant_type: "nf4" # 量子化種別 (fp4 or nf4) 
-  bnb_4bit_compute_dtype: "bfloat16"  # 量子化のdtype (float16 or bfloat16) ※変数固定で
+  bnb_4bit_compute_dtype: "bfloat16"  # 量子化のdtype (float16 or bfloat16)
   bnb_4bit_use_double_quant: False  # 二重量子化の有効化
 
 tokenizer_config:
@@ -30,11 +32,11 @@ peft_config:
   lora_dropout: 0.5
   bias: "all"
   task_type: "CAUSAL_LM"
-  ### target objectは全てのlinerLayerを検索してアプリ側で決める
+  ### target modulesは全てのlinerLayerを検索してアプリ側で決める
   #target_modules: ["q_proj", "o_proj", "gate_proj", "up_proj", "down_proj", "k_proj", "v_proj"]
 
 training_config:
-  output_dir: "./output"
+  #output_dir: "./output" ### output dirはコード側で指定(output+titleにしたいので)
   fp16: False
   bf16: True
   max_steps: 300  # 学習ステップ数
@@ -49,6 +51,6 @@ training_config:
   save_steps: 25  # 何ステップ毎にチェックポイントを保存するか
   logging_steps: 25  # 何ステップ毎にログを記録するか
   group_by_length: True  # シーケンスを同じ長さのバッチにグループ化 (メモリ節約)
-  neftune_noise_alpha: 10
+  neftune_noise_alpha: 5
   report_to: "tensorboard"  # レポート
   

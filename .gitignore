@@ -18,3 +18,6 @@ garbage/
 __pycache__/
 response/*
 !response/.gitkeep
+generate_config/*
+!generate_config/generate_config.yaml
+!generate_config/generate_config_line1.7.yaml

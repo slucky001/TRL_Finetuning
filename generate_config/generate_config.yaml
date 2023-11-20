@@ -1,19 +1,19 @@
-### Sample cyberagent calm2-7b-chat 
+### Sample config 
 file_config:
-  title: "calm2-7b-chat_lr2e-4_do0.5_nef5_step300" ## タイトルは好きにつける
+  title: "line1.7b-sft_lr2e-4_do0.5_nef5_step300" #タイトルは好きにつける
   dataset_path: "./dataset"
   output_dir: "./output"
-  model_path: "cyberagent/calm2-7b-chat"
+  model_path: "line-corporation/japanese-large-lm-1.7b-instruction-sft"
 
 other_config:
-  #max_seq_length: 512 # "None"=1024 datasetが15000recordあるとbatch1でもVRAM24GBで足りなくなる。512だと足りる。
-  max_seq_length: 1024 # "None"=1024 datasetが15000recordあるとbatch1でもVRAM24GBで足りなくなる。512だと足りる。
+  max_seq_length: 512 # "None"=1024 datasetが15000recordあるとbatch1でもVRAM24GBで足りなくなる。512だと足りる。
+  #max_seq_length: 1024 # "None"=1024 datasetが15000recordあるとbatch1でもVRAM24GBで足りなくなる。512だと足りる。
 
 prompt_config:
   system_prefix: "" ### Llama2なら[INST]<<SYS>>\nに相当(Trainingなら未使用)
-  user_prefix: "USER: " ### ユーザーprefix Llama2 zeroshotなら[INST]に相当
+  user_prefix: "ユーザー: " ### ユーザーprefix Llama2 zeroshotなら[INST]に相当
   input_prefix: "" ### 
-  assistant_prefix: "\nASSISTANT: " ### AI prefix
+  assistant_prefix: " システム:" ### AI prefix
 
 bnb_4bit_config: ### これがほぼModelConfig 7B batch4で24GBVRAMが必要なので実質load in 4bit固定
   load_in_4bit: True
@@ -23,8 +23,8 @@ bnb_4bit_config: ### これがほぼModelConfig 7B batch4で24GBVRAMが必要な
 
 tokenizer_config:
   use_fast: False  # Fastトークナイザーの有効化
-  add_eos_token: True  # データへのEOSの追加を指示
-  trust_remote_code: True
+  #add_eos_token: True  # データへのEOSの追加を指示
+  #trust_remote_code: True
 
 peft_config:
   r: 64
@@ -51,6 +51,6 @@ training_config:
   save_steps: 25  # 何ステップ毎にチェックポイントを保存するか
   logging_steps: 25  # 何ステップ毎にログを記録するか
   group_by_length: True  # シーケンスを同じ長さのバッチにグループ化 (メモリ節約)
-  neftune_noise_alpha: 10
+  neftune_noise_alpha: 5
   report_to: "tensorboard"  # レポート
   

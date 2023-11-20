@@ -37,6 +37,7 @@ Windowsの場合、bitsandbytesの入れ替えが必要です。<br>
 python -m pip install bitsandbytes==0.41.1 --prefer-binary --extra-index-url=https://jllllll.github.io/bitsandbytes-windows-webui
 ```
 ### 使用方法
+#### trl sft training
 以下のコマンドでtrainsettings内のyamlファイルに記述した設定に従ってLoRAアダプタを作成してくれます。<br>
 デフォルトではcalm2-7b-chat Learning rate 2e-4,step300の設定を入れておきます。<br>
 LoRAConig,TrainingArgumentsは引数をほぼそのままYAMLにしてあるので追加、修正そのまま可能ですが型に注意が必要です。<br>
@@ -56,10 +57,24 @@ tensorboardのreportを出力するので、以下のコマンドで学習結果
 tensorboard --logdir ./output
 ```
 
+#### Test output
+generate_config内のgenerate_config.yamlを読み込むことでテスト出力できます。
+
+```
+generate_lora.py --config .\generate_config\generate_config.yaml
+```
+### Change log
+- 2023.11.20
+    - T5Tokenizer用のsentencepieceをrequired.txtに追加(LINE1.7b用)
+    - LINE1.7b sft用のサンプル設定を追加
+    - YAMLにタイトル欄を設けて、アダプタはoutputの下にタイトル名のフォルダに出力するよう変更
+    ※たくさん出力して評価するため。
+    - generate_lora用にgenerate_config.yamlを作成
+
 
 ---
 ### Todo
-- [ ]  lora test用のgenerate汎用化
+- [x]  lora test用のgenerate汎用化
 - [ ]  lora merge対応
 - [ ]  merge後の出力評価用スクリプト対応
 - [ ]  merge modelのgguf化 , ctranslate2対応

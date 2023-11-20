@@ -33,7 +33,7 @@ with open(args.config, 'r',encoding='utf-8') as file:
 
 model_path = file_config['model_path']
 dataset_path = file_config['dataset_path']
-output_path = training_config['output_dir']
+output_path = file_config['output_dir']+"/"+file_config['title']
 max_seq_len = other_config['max_seq_length']
 
 print("model_path:",model_path)
@@ -84,7 +84,7 @@ print("target modules:",target_modules)
 peft_config = LoraConfig(target_modules=target_modules,**peft_config)
 
 ### 学習パラメータ
-training_arguments = TrainingArguments(**training_config)
+training_arguments = TrainingArguments(output_dir=output_path,**training_config)
 
 ### SFTパラメータ
 trainer = SFTTrainer(

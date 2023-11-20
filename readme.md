@@ -59,23 +59,35 @@ tensorboard --logdir ./output
 
 #### Test output
 generate_config内のgenerate_config.yamlを読み込むことでテスト出力できます。
-
+generate_config.yaml内のfile_configは、training用のconfig.yamlとあわせてください。
 ```
 generate_lora.py --config .\generate_config\generate_config.yaml
 ```
+#### Merge Model
+generate_config内のgenerate_config.yamlを読み込むことでテスト出力できます。
+file_configは、training用のconfig.yamlを指定してください。
+
+```
+merge_lora.py --config .\trainingsettings\training_config.yaml
+```
+
 ### Change log
 - 2023.11.20
     - T5Tokenizer用のsentencepieceをrequired.txtに追加(LINE1.7b用)
     - LINE1.7b sft用のサンプル設定を追加
     - YAMLにタイトル欄を設けて、アダプタはoutputの下にタイトル名のフォルダに出力するよう変更
     ※たくさん出力して評価するため。
-    - generate_lora用にgenerate_config.yamlを作成
+    - generate_lora用にgenerate_config.yamlを作成(lineのみすり合わせ済み)
+    - merge_lora.pyを設定ファイル化。設定はトレーニングと共用。
 
 
 ---
 ### Todo
-- [x]  lora test用のgenerate汎用化
-- [ ]  lora merge対応
-- [ ]  merge後の出力評価用スクリプト対応
-- [ ]  merge modelのgguf化 , ctranslate2対応
-- [ ]  merge modelテスト用のsimple webui対応
+- [x] lora test用のgenerate_lora設定ファイル化(まずLINE1.7b)
+- [x] lora mergeの設定ファイル化(まずLINE1.7b)
+- [ ] merge model用のgenerateを設定ファイル化
+- [ ] merge model用のgenerateの入出力をファイルにする
+- [ ] 上記、設定ファイルのcalm2-7b-chat用作成と調整
+- [ ] merge後の出力評価用スクリプト対応
+- [ ] merge modelのgguf化 , ctranslate2対応
+- [ ] merge modelテスト用のsimple webui対応

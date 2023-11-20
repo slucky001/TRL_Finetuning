@@ -23,6 +23,7 @@ bnb_4bit_config: ### これがほぼModelConfig 7B batch4で24GBVRAMが必要な
 
 tokenizer_config:
   use_fast: False  # Fastトークナイザーの有効化
+  legacy: False
   #add_eos_token: True  # データへのEOSの追加を指示
   #trust_remote_code: True
 

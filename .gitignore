@@ -8,6 +8,7 @@ dataset/*
 !dataset/.gitkeep
 trainsettings/*
 !trainsettings/train_config.yaml
+!trainsettings/train_config_line1.7.yaml
 merged_model/*
 !merged_model/.gitkeep
 evaluation/*

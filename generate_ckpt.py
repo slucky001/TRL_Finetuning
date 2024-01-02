@@ -1,10 +1,39 @@
+### generate with mergemodel
+import argparse
+import yaml
 from transformers import AutoModelForCausalLM
 from transformers import AutoTokenizer
 import torch
 
-# モデルの準備
+### argparseを設定
+parser = argparse.ArgumentParser(description="生成設定")
+parser.add_argument('--config', type=str, required=True, help='YAML設定ファイルのパス')
+args = parser.parse_args()
+
+### 設定用YAMLファイルの読み込み
+with open(args.config, 'r',encoding='utf-8') as file:
+    config = yaml.safe_load(file)
+
+    file_config = config['file_config']
+    prompt_config = config['prompt_config']
+    tokenizer_config = config['tokenizer_config']
+    generate_config = config['generate_config']
+    modelload_config = config['modelload_config']
+
+### model path
+model_path = file_config['model_path'] ### base model
+output_path = file_config['output_dir']+"/"+file_config['title']
+
+### prompt
+system_prefix = prompt_config['system_prefix']
+user_prefix = prompt_config['user_prefix']
+assistant_prefix = prompt_config['assistant_prefix']
+test_message = prompt_config['test_message']
+
+
+### モデルの準備
 model = AutoModelForCausalLM.from_pretrained(
-    "./merged_model",
+    "./merged_model", ### 評価の過程でmerged_modelはテンポラリなのでフォルダ固定
     torch_dtype=torch.bfloat16,
     load_in_4bit=True,  # 4bit量子化
     device_map={"": 0},
@@ -13,28 +42,25 @@ model = AutoModelForCausalLM.from_pretrained(
 # トークナイザーの準備
 tokenizer = AutoTokenizer.from_pretrained(
     "./merged_model", 
-    use_fast=False,
+    **tokenizer_config,
 )
 tokenizer.pad_token = tokenizer.eos_token
 tokenizer.padding_side = "right"
 
-prompt = "以下は、タスクを説明する指示と、文脈のある入力の組み合わせです。要求を適切に満たす応答を書きなさい。\nUSER: お好み焼きの作り方を詳しく教えて。\nASSISTANT:"
-prompt = "ユーザー: お好み焼きの作り方を詳しく教えて。\nシステム: "
-
+### プロンプトの準備
+prompt = f"{system_prefix}{user_prefix}{test_message}{assistant_prefix}"
 
 # 推論の実行
 input_ids = tokenizer(prompt, add_special_tokens=False, return_tensors='pt')
+
+### special token idの設定
+generate_config['pad_token_id'] = getattr(tokenizer, generate_config['pad_token_id'])
+generate_config['bos_token_id'] = getattr(tokenizer, generate_config['bos_token_id'])
+generate_config['eos_token_id'] = getattr(tokenizer, generate_config['eos_token_id'])
+
 output_ids = model.generate(
     **input_ids.to(model.device),
-    max_new_tokens=200,
-    repetition_penalty = 1.3,
-    do_sample=True,
-    #temperature=0.3, ### 評価のためにtemperatureは極力下げる
-    temperature=0.8,
-#    temperature=0.01,
-    pad_token_id=tokenizer.pad_token_id, ### youri パッドないのでeosにしろ、ってTransformersから怒られるのでこうした
-    bos_token_id=tokenizer.bos_token_id,
-    eos_token_id=tokenizer.eos_token_id
+    **generate_config,
 )
 output = tokenizer.decode(output_ids.tolist()[0])
 print(output)

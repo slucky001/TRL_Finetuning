@@ -58,7 +58,8 @@ tensorboard --logdir ./output
 ```
 
 #### Test output
-generate_config内のgenerate_config.yamlを読み込むことでテスト出力できます。
+
+generate_config内のgenerate_config.yamlを読み込むことで指定したベースモデルでLoRAを使用した場合のテスト出力できます。
 generate_config.yaml内のfile_configは、training用のconfig.yamlとあわせてください。
 ```
 generate_lora.py --config .\generate_config\generate_config.yaml
@@ -79,13 +80,19 @@ merge_lora.py --config .\trainingsettings\training_config.yaml
     ※たくさん出力して評価するため。
     - generate_lora用にgenerate_config.yamlを作成(lineのみすり合わせ済み)
     - merge_lora.pyを設定ファイル化。設定はトレーニングと共用。
-
+-2023.11.21
+    - generate_ckpt.pyを一部設定ファイル化。
+-2023.11.25
+    - 評価用のmerge+generateを作成。
+        training configから、各チェックポイントでマージを行い、評価用入力からの評価用の出力を行う。
+        …にあたり、とりあえず、チェックポイント全マージの前半分作成
+        …残り後半test.csvからinput.csvを読み込んで
 
 ---
 ### Todo
 - [x] lora test用のgenerate_lora設定ファイル化(まずLINE1.7b)
 - [x] lora mergeの設定ファイル化(まずLINE1.7b)
-- [ ] merge model用のgenerateを設定ファイル化
+- [x] merge model用のgenerateを設定ファイル化(とりあえずTokenizer,special_token_idあたり)
 - [ ] merge model用のgenerateの入出力をファイルにする
 - [ ] 上記、設定ファイルのcalm2-7b-chat用作成と調整
 - [ ] merge後の出力評価用スクリプト対応

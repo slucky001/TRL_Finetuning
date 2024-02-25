@@ -87,7 +87,10 @@ merge_lora.py --config .\trainingsettings\training_config.yaml
         training configから、各チェックポイントでマージを行い、評価用入力からの評価用の出力を行う。
         …にあたり、とりあえず、チェックポイント全マージの前半分作成
         …残り後半test.csvからinput.csvを読み込んで
-
+-2024.02.25
+    - ターゲットモジュールはyamlのpeft_configから切り離した。
+        記述がなければLM_HEAD以外の全てのLinerLayerを取得してターゲットモジュールにする
+        記述があれば書いたレイヤをターゲットモジュールにする
 ---
 ### Todo
 - [x] lora test用のgenerate_lora設定ファイル化(まずLINE1.7b)

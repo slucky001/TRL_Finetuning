@@ -30,11 +30,13 @@ with open(args.config, 'r',encoding='utf-8') as file:
     peft_config = config['peft_config']
     training_config = config['training_config']
     other_config = config['other_config']
+    
 
 model_path = file_config['model_path']
 dataset_path = file_config['dataset_path']
 output_path = file_config['output_dir']+"/"+file_config['title']
 max_seq_len = other_config['max_seq_length']
+
 
 print("model_path:",model_path)
 print("dataset_path:",dataset_path)
@@ -76,7 +78,11 @@ tokenizer.pad_token = tokenizer.unk_token
 tokenizer.padding_side = "right" # fp16でのオーバーフロー問題対策
 
 ### ターゲットモジュールの取得
-target_modules = common.find_all_linear_names_4bit_bnb(model)
+try:
+    target_modules = config['target_modules']
+except:
+    target_modules = common.find_all_linear_names_4bit_bnb(model)
+
 print("target modules:",target_modules)
 
 

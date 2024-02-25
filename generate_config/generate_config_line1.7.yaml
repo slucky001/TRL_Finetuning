@@ -1,6 +1,6 @@
 ### Sample config 
 file_config:
-  title: "line1.7b-sft_lr2e-4_do0.5_nef5_step300" #LoRA設定と同じにしてください
+  title: "line1.7b-sft_lr2.5e-5_do0.5_nef10_step50000/checkpoint-25000" #LoRA設定と同じにしてください
   dataset_path: "./dataset" #(未使用)
   output_dir: "./output" # LoRA adapter output dir
   model_path: "line-corporation/japanese-large-lm-1.7b-instruction-sft" #base model
@@ -20,14 +20,14 @@ prompt_config:
   system_prefix: "" ### 小モデルだと指示を入れると
   user_prefix: "\nユーザー: " ### ユーザーprefix Llama2 zeroshotなら[INST]に相当
   input_prefix: "" ### 
-  assistant_prefix: "\nシステム:" ### AI prefix
+  assistant_prefix: "\nシステム: " ### AI prefix
   test_message: "お好み焼きの作り方を詳しく教えて。" #テスト用入力
 
 generate_config:
     max_new_tokens: 200
     repetition_penalty : 1.3
     do_sample: True
-    temperature: 0.8
+    temperature: 0.2
     #temperature: 0.01 ### 評価する場合はtemperatureは極力下げる
     pad_token_id: pad_token_id ### たまにpad=eosのことがあるため設定化しておく
     bos_token_id: bos_token_id
